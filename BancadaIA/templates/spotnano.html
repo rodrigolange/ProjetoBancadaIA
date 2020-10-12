@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+  <h1>{{ titulo }}</h1>
+
+
+    <p style="margin-bottom:1cm;"></p>
+    <p class="aligncenter">
+    <img src="{% static "images/BancadaSpotNano.jpg" %}" alt='Bancada Spot Nano' width='400' height='300'>
+    </p>
+
+    <a href="{% url 'experimentospotnano' %}">Novo Experimento</a></li>
+{% endblock %}

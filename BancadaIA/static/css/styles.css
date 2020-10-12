@@ -1,0 +1,16 @@
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+h1  {
+    color: #ff0000;
+    font-size: x-large;
+    margin-bottom: .3em;
+    text-align: center;
+}
