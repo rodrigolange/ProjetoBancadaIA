@@ -1,6 +1,6 @@
 from django.shortcuts import render
 #from django.http import HttpResponse
-from .forms import PostForm
+#from .forms import PostForm
 
 
 # corresponde ao definido no arquivo urls.py
