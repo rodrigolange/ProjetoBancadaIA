@@ -7,7 +7,6 @@ from django.shortcuts import redirect
 
 
 # corresponde ao definido no arquivo urls.py
-
 def index(request):
     context = {
         'titulo': 'Bancada de Experimentos de IA',
@@ -21,19 +20,15 @@ def spotnano(request):
     context = {
         'titulo': 'Spot Nano',
     }
-    return render(request, 'spotnano.html', context=context)
+    return render(request, 'spotnano/index.html', context=context)
 
-def listaexperimentos(request):
+
+def spotnano_experimentos_lista(request):
     posts = ExperimentoSpotNano.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
-    return render(request, 'listaexperimentos.html', {'posts': posts, 'titulo': 'Lista de experimentos com o Spot Nano'})
+    return render(request, 'spotnano/spotnano_experimentos_lista.html', {'posts': posts, 'titulo': 'Lista de experimentos com o Spot Nano'})
 
 
-def post_detail(request, pk):
-    post = get_object_or_404(ExperimentoSpotNano, pk=pk)
-    return render(request, 'post_detail.html', {'post': post})
-
-
-def post_new(request):
+def spotnano_experimentos_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
@@ -41,13 +36,18 @@ def post_new(request):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('spotnano_experimentos_detail', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'post_edit.html', {'form': form})
+    return render(request, 'spotnano/spotnano_experimentos_edit.html', {'form': form})
 
 
-def post_edit(request, pk):
+def spotnano_experimentos_detail(request, pk):
+    post = get_object_or_404(ExperimentoSpotNano, pk=pk)
+    return render(request, 'spotnano/spotnano_experimentos_detail.html', {'post': post})
+
+
+def spotnano_experimentos_edit(request, pk):
     post = get_object_or_404(ExperimentoSpotNano, pk=pk)
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
@@ -56,8 +56,8 @@ def post_edit(request, pk):
             post.author = request.user
             post.created_date = timezone.now()
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('spotnano_experimentos_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'post_edit.html', {'form': form})
+    return render(request, 'spotnano/spotnano_experimentos_edit.html', {'form': form})
 

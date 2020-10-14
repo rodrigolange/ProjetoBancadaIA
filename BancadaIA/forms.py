@@ -6,5 +6,5 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = ExperimentoSpotNano
-        fields = ('title', 'text',)
+        fields = ('title', 'codigo',)
 

@@ -7,8 +7,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('spotnano/', views.spotnano, name='spotnano'),
-    path('listaexperimentos/', views.listaexperimentos, name='listaexperimentos'),
-    path('post/new/', views.post_new, name='post_new'),
-    path('post/<int:pk>/', views.post_detail, name='post_detail'),
-    path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
+    path('spotnano/experimentos/lista/', views.spotnano_experimentos_lista, name='spotnano_experimentos_lista'),
+    path('spotnano/experimentos/new/', views.spotnano_experimentos_new, name='spotnano_experimentos_new'),
+    path('spotnano/experimentos/<int:pk>/detalhe/', views.spotnano_experimentos_detail, name='spotnano_experimentos_detail'),
+    path('spotnano/experimentos/<int:pk>/edit/', views.spotnano_experimentos_edit, name='spotnano_experimentos_edit'),
 ]

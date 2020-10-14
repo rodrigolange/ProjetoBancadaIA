@@ -7,7 +7,7 @@
 
     {% for post in posts %}
         <div>
-            <h2><a href="">{{ post.title }}</a></h2>
+            <h2><a href="{% url 'spotnano_experimentos_detail' pk=post.pk %}">{{ post.title }}</a></h2>
             <p>Criação: {{ post.created_date }}</p>
         </div>
     {% endfor %}
