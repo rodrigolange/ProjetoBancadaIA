@@ -1,0 +1,5 @@
+sites:
+
+https://tutorial.djangogirls.org/en/django_forms/
+
+https://docs.djangoproject.com/en/3.1/topics/forms/
