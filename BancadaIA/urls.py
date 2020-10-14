@@ -7,5 +7,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('spotnano/', views.spotnano, name='spotnano'),
-    #path('experimentospotnano/', views.experimentospotnano, name='experimentospotnano'),
+    path('listaexperimentos/', views.listaexperimentos, name='listaexperimentos'),
+    path('post/new/', views.post_new, name='post_new'),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),
+    path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
 ]
