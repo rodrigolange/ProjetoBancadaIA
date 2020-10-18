@@ -3,6 +3,7 @@ from django.utils import timezone
 from .models import ExperimentoSpotNano
 from .forms import PostForm
 from django.shortcuts import redirect
+from datetime import datetime
 #from django.http import HttpResponse
 
 
@@ -36,6 +37,16 @@ def spotnano_experimentos_new(request):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
+
+            codigo = form.cleaned_data['codigo']
+            codigo.replace('\r\r', '')
+            print(codigo)
+            filename = "teste.py" #datetime.now().strftime("%d-%m-%Y-%H-%M-%S") + ".py"
+            f = open(".\\temp\\" + filename, "w+", newline="\n") # newline="\n" evita o problema de fim de linha errado no arquivo
+            f.write(codigo)
+            f.close()
+
+
             return redirect('spotnano_experimentos_detail', pk=post.pk)
     else:
         form = PostForm()
