@@ -3,7 +3,10 @@ from django.utils import timezone
 from .models import ExperimentoSpotNano
 from .forms import PostForm
 from django.shortcuts import redirect
+import time
 from datetime import datetime
+import os
+
 #from django.http import HttpResponse
 
 
@@ -38,14 +41,24 @@ def spotnano_experimentos_new(request):
             post.published_date = timezone.now()
             post.save()
 
+            #gera arquivo do experimento
             codigo = form.cleaned_data['codigo']
             codigo.replace('\r\r', '')
             print(codigo)
             filename = "teste.py" #datetime.now().strftime("%d-%m-%Y-%H-%M-%S") + ".py"
-            f = open(".\\temp\\" + filename, "w+", newline="\n") # newline="\n" evita o problema de fim de linha errado no arquivo
+            f = open(".\\temp\\" + filename, "w", newline="\n") # newline="\n" evita o problema de fim de linha errado no arquivo
             f.write(codigo)
             f.close()
 
+            # faz upload do experimento
+            comandoUpload = "python webrepl/upload.py -p senha temp/teste.py 10.0.0.100:/experimentos/" #trocar para python3 no linux
+            os.system(comandoUpload)
+            print("terminei o upload")
+
+            #executa experimento remotamente
+            comandoExecutar = "python webrepl/executar.py"  # trocar para python3 no linux
+            os.system(comandoExecutar)
+            os.remove('temp/teste.py')
 
             return redirect('spotnano_experimentos_detail', pk=post.pk)
     else:
