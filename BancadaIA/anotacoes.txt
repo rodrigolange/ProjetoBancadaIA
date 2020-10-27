@@ -3,3 +3,6 @@ sites:
 https://tutorial.djangogirls.org/en/django_forms/
 
 https://docs.djangoproject.com/en/3.1/topics/forms/
+
+celery -A ProjetoBancadaIA worker --without-gossip --without-mingle --without-heartbeat -Ofair -l INFO --co
+ncurrency 1 -P solo

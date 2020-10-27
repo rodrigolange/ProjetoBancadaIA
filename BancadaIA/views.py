@@ -3,10 +3,10 @@ from django.utils import timezone
 from .models import ExperimentoSpotNano
 from .forms import PostForm
 from django.shortcuts import redirect
-import time
-from datetime import datetime
 from django.views.generic.edit import FormView
-import os
+
+from .tasks import enviarCodigoTask
+
 
 #from django.http import HttpResponse
 
@@ -50,6 +50,10 @@ class SpotNanoExperimentosEdit(FormView):
             post.author = request.user
             post.created_date = timezone.now()
             post.save()
+
+            codigo = form.cleaned_data['codigo']
+            codigo.replace('\r\r', '')
+            enviarCodigoTask.delay('10.0.0.100', '8266', codigo)
             return redirect('spotnano_experimentos_detail', pk=post.pk)
 
 
@@ -59,36 +63,20 @@ class SpotNanoExperimentosNew(FormView):
         return render(request, 'spotnano/spotnano_experimentos_edit.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
-        if request.method == "POST":
-            form = PostForm(request.POST)
-            if form.is_valid():
-                post = form.save(commit=False)
-                post.author = request.user
-                post.published_date = timezone.now()
-                post.save()
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
 
-                #gera arquivo do experimento
-                codigo = form.cleaned_data['codigo']
-                codigo.replace('\r\r', '')
-                print(codigo)
-                filename = "teste.py" #datetime.now().strftime("%d-%m-%Y-%H-%M-%S") + ".py"
-                f = open(".\\temp\\" + filename, "w", newline="\n") # newline="\n" evita o problema de fim de linha errado no arquivo
-                f.write(codigo)
-                f.close()
+            #gera arquivo do experimento
+            codigo = form.cleaned_data['codigo']
+            codigo.replace('\r\r', '')
 
-                # faz upload do experimento
-                comandoUpload = "python webrepl/upload.py -p senha temp/teste.py 10.0.0.100:/experimentos/" #trocar para python3 no linux
-                os.system(comandoUpload)
-                print("terminei o upload")
+            enviarCodigoTask.delay('10.0.0.100', '8266', codigo)
 
-                #executa experimento remotamente
-                comandoExecutar = "python webrepl/executar.py"  # trocar para python3 no linux
-                os.system(comandoExecutar)
-                os.remove('temp/teste.py')
-
-                return redirect('spotnano_experimentos_detail', pk=post.pk)
-
-        return render(request, 'spotnano/spotnano_experimentos_edit.html', {'form': form})
+            return redirect('spotnano_experimentos_detail', pk=post.pk)
 
 
 class SpotNanoExperimentosDetail(FormView):

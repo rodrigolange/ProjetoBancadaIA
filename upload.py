@@ -7,7 +7,8 @@ try:
     import usocket as socket
 except ImportError:
     import socket
-import webrepl.websocket_helper as websocket_helper
+import websocket_helper as websocket_helper
+
 
 # Define to 1 to use builtin "websocket" module of MicroPython
 USE_BUILTIN_WEBSOCKET = 0
