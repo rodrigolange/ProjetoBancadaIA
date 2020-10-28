@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'BancadaIA.apps.BancadaiaConfig',
+    'celery_progress',
 ]
 
 MIDDLEWARE = [

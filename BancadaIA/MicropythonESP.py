@@ -1,5 +1,6 @@
 import os
 import time
+from celery_progress.backend import ProgressRecorder
 
 class MicropythonESP:
     def __init__(self, ip, port):
