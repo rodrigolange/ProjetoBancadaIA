@@ -1,3 +1,5 @@
+from celery.result import AsyncResult
+from django.core.serializers import json
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.shortcuts import redirect
@@ -9,7 +11,7 @@ from .forms import PostForm
 from .tasks import enviarCodigoTask
 
 
-#from django.http import HttpResponse
+from django.http import HttpResponse
 
 
 class Index(FormView):
@@ -75,12 +77,25 @@ class SpotNanoExperimentosNew(FormView):
             codigo = form.cleaned_data['codigo']
             codigo.replace('\r\r', '')
 
-            enviarCodigoTask.delay('10.0.0.100', codigo)
+            taskID = enviarCodigoTask.delay('10.0.0.100', codigo)
+            print(f'ID da task:{taskID}')
 
-            return redirect('spotnano_experimentos_detail', pk=post.pk)
+            #return redirect('spotnano_experimentos_detail', pk=post.pk)
+            return redirect('spotnano_experimentos_progress', taskID)
 
 
 class SpotNanoExperimentosDetail(FormView):
     def get(self, request, pk, *args, **kwargs):
         post = get_object_or_404(ExperimentoSpotNano, pk=pk)
         return render(request, 'spotnano/spotnano_experimentos_detail.html', {'post': post})
+
+
+def SpotNanoExperimentosGetProgress(request, task_id):
+    result = AsyncResult(task_id)
+    response_data = {
+        'state': result.state,
+        'details': result.info,
+        'status': result.status
+    }
+    return render(request, 'spotnano/spotnano_experimentos_progress.html', response_data)
+    #return HttpResponse(result.info)
