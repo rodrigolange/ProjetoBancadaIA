@@ -1,11 +1,9 @@
 import os
-import time
-from celery_progress.backend import ProgressRecorder
+
 
 class MicropythonESP:
-    def __init__(self, ip, port):
+    def __init__(self, ip):
         self.IPAddress = ip
-        self.IPPort = port
 
     def runexperiment(self, codigo):
         codigo.replace('\r\r', '')
@@ -14,20 +12,16 @@ class MicropythonESP:
         f.write(codigo)
         f.close()
 
-        time.sleep(1)
-
         # faz upload do experimento
-        comandoUpload = "python upload.py -p senha temp/teste.py 10.0.0.100:/experimentos/"  # trocar para python3 no linux
+        comandoUpload = "python upload.py -p senha temp/teste.py " + self.IPAddress + ":/experimentos/"  # trocar para python3 no linux
         os.system(comandoUpload)
         print("terminei o upload")
 
-        time.sleep(1)
 
         # executa experimento remotamente
         comandoExecutar = "python executar.py"  # trocar para python3 no linux
         os.system(comandoExecutar)
         os.remove('temp/teste.py')
 
-        time.sleep(1)
 
         return True

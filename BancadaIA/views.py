@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from .models import ExperimentoSpotNano
-from .forms import PostForm
 from django.shortcuts import redirect
 from django.views.generic.edit import FormView
+from .models import ExperimentoSpotNano
+from .forms import PostForm
+
 
 from .tasks import enviarCodigoTask
 
@@ -53,7 +54,7 @@ class SpotNanoExperimentosEdit(FormView):
 
             codigo = form.cleaned_data['codigo']
             codigo.replace('\r\r', '')
-            enviarCodigoTask.delay('10.0.0.100', '8266', codigo)
+            enviarCodigoTask.delay('10.0.0.100', codigo)
             return redirect('spotnano_experimentos_detail', pk=post.pk)
 
 
@@ -74,7 +75,7 @@ class SpotNanoExperimentosNew(FormView):
             codigo = form.cleaned_data['codigo']
             codigo.replace('\r\r', '')
 
-            enviarCodigoTask.delay('10.0.0.100', '8266', codigo)
+            enviarCodigoTask.delay('10.0.0.100', codigo)
 
             return redirect('spotnano_experimentos_detail', pk=post.pk)
 
