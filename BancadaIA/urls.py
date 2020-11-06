@@ -1,6 +1,4 @@
 from django.urls import path
-
-
 from . import views
 
 # caminho para o index.html.
