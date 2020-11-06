@@ -7,3 +7,6 @@ https://docs.djangoproject.com/en/3.1/topics/forms/
 celery -A ProjetoBancadaIA worker --without-gossip --without-mingle --without-heartbeat -Ofair -l INFO --concurrency 1 -P solo
 
 C:\Users\lange\ArquivosCompartilhados\OneDrive\Django\ProjetoBancadaIA\Redis-w64\redis-server.exe
+
+
+pip install django-crispy-forms
