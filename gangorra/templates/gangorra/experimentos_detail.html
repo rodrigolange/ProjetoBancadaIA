@@ -1,0 +1,15 @@
+{% extends "gangorra/base.html" %}
+{% load static %}
+
+{% block content %}
+<center>
+    <br>
+        <video width='600' controls>
+            <source src='{{ post.videoArquivo }}' type='video/mp4'>
+            File not found.
+        </video>
+    <br>
+</center>
+{% endblock %}
+
+

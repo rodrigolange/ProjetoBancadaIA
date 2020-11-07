@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = "BancadaIA"
+
 # caminho para o index.html.
 # irah procurar a funcao index no arquivo views.py
 urlpatterns = [

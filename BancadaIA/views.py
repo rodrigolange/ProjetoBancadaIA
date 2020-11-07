@@ -6,12 +6,7 @@ from django.shortcuts import redirect
 from django.views.generic.edit import FormView
 from .models import ExperimentoSpotNano
 from .forms import PostForm
-
-
 from .tasks import enviarCodigoTask
-
-
-from django.http import HttpResponse
 
 
 class Index(FormView):
