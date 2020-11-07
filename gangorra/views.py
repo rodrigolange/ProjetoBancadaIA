@@ -20,11 +20,9 @@ def video_upload(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
+            print(request.user)
             post.created_date = timezone.now()
-            print(post)
             post.save()
-
-            print("form ok!")
             return redirect('gangorra:index')
     else:
         form = VideoForm()

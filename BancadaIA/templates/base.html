@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>{% block pagetitle %}{% endblock %}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+.w3-sidebar {
+  z-index: 3;
+  width: 250px;
+  top: 43px;
+  bottom: 0;
+  height: inherit;
+}
+
+.extopnav-right {
+    float: right;
+}
+
+</style>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+    <a href="#" class="w3-bar-item w3-button w3-theme-l1">Logo</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Spot Nano</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Gangorra Controle</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Gangorra IA</a>
+    <div class="extopnav-right">
+        {% if user.is_authenticated %}
+            <a class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white extopnav-right">{{ request.user.username }}</a>
+            <a href="/usuarios/logout" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white extopnav-right">Logout</a>
+        {% else %}
+            <a href="/usuarios" class="w3-bar-item w3-button w3-hide-small w3-hide-medium w3-hover-white extopnav-right">Login</a>
+        {% endif %}
+    </div>
+
+  </div>
+</div>
+
+<!-- Sidebar -->
+{% block sidebar %}{% endblock%}
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+<div class="w3-main" style="margin-left:250px">
+
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container">
+        {% block content %}{% endblock%}
+    </div>
+   </div>
+
+<!-- END MAIN -->
+</div>
+
+</body>
+</html>

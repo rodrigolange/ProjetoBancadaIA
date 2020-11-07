@@ -52,7 +52,7 @@ class SpotNanoExperimentosEdit(FormView):
             codigo = form.cleaned_data['codigo']
             codigo.replace('\r\r', '')
             enviarCodigoTask.delay('10.0.0.100', codigo)
-            return redirect('spotnano_experimentos_detail', pk=post.pk)
+            return redirect('BancadaIA:spotnano_experimentos_detail', pk=post.pk)
 
 
 class SpotNanoExperimentosNew(FormView):
@@ -76,7 +76,7 @@ class SpotNanoExperimentosNew(FormView):
             print(f'ID da task:{taskID}')
 
             #return redirect('spotnano_experimentos_detail', pk=post.pk)
-            return redirect('spotnano_experimentos_progress', taskID)
+            return redirect('BancadaIA:spotnano_experimentos_progress', taskID)
 
 
 class SpotNanoExperimentosDetail(FormView):
@@ -93,4 +93,3 @@ def SpotNanoExperimentosGetProgress(request, task_id):
         'status': result.status
     }
     return render(request, 'spotnano/spotnano_experimentos_progress.html', response_data)
-    #return HttpResponse(result.info)

@@ -1,12 +1,22 @@
-{% extends "base_generic.html" %}
+{% extends "base.html" %}
+
 {% load static %}
 
+{% block pagetitle %}Bancada de Experimentos: Spot Nano{% endblock %}
+
 {% block content %}
-    <h1>{{ titulo }}</h1>
-
-    <p style="margin-bottom:3cm;"></p>
-
-    <p class="aligncenter">
-        <img src="{% static "images/SpotMicroNano.jpeg" %}" alt='Bancada IA' width='800' height='500'>
-    </p>
+      <h1 class="w3-text-teal w3-center">{{ titulo }}</h1>
+      <img src="{% static "images/SpotMicroNano.jpeg" %}" alt='Bancada IA' width='800' height='500' class="w3-center">
 {% endblock %}
+
+{% block sidebar %}
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
+    <i class="fa fa-remove"></i>
+  </a>
+  <h4 class="w3-bar-item"><b>Menu</b></h4>
+  <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'BancadaIA:spotnano_experimentos_new' %}">Novo Experimento</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="{% url 'BancadaIA:spotnano_experimentos_lista' %}">Lista de Experimentos</a>
+</nav>
+{% endblock%}S
+

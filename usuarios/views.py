@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from .forms import NewUserForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import HttpResponse
 
@@ -33,8 +33,22 @@ def login_request(request):
                 messages.info(request, f"You are now logged in as {username}.")
                 return redirect("/BancadaIA")
             else:
-                messages.error(request, "Invalid username or password.")
+                messages.error(request, 'username or password not correct')
+                return redirect('usuarios:login_request')
+
         else:
-            messages.error(request, "Invalid username or password.")
+            messages.error(request, 'username or password not correct')
+            return redirect('usuarios:login_request')
+
     form = AuthenticationForm()
-    return render(request=request, template_name="usuarios/login.html", context={"login_form": form})
+    context = {
+        "login_form": form
+
+    }
+    return render(request=request, template_name="usuarios/login.html", context=context)
+
+
+def logout_request(request):
+    logout(request)
+    messages.info(request, "Logged out successfully!")
+    return redirect("usuarios:login_request")

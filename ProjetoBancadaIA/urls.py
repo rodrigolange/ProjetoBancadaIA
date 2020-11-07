@@ -13,3 +13,6 @@ urlpatterns += [
     path('usuarios/', include('usuarios.urls')),
     path('gangorra/', include('gangorra.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Em https://overiq.com/django-1-10/handling-media-files-in-django/ :
+# Dicas para mostrar midia e arquivos
