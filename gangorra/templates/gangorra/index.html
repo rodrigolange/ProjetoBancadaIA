@@ -1,4 +1,10 @@
 {% extends "gangorra/base.html" %}
+
+{% load static %}
+
+{% block pagetitle %}Bancada de Experimentos: Gangorra Controle{% endblock %}
+
 {% block content %}
-    <p> Olá mundo! </p>
-{% endblock content %}
+      <h1 class="w3-text-teal w3-center">{{ titulo }}</h1>
+      <img src="{% static "images/gangorra.jpeg" %}" alt='Gangorra Controle' width='800' height='500' class="w3-center">
+{% endblock %}

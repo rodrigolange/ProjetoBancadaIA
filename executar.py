@@ -15,6 +15,9 @@ try:                   # from https://stackoverflow.com/a/7321970
 except NameError:
     pass
 
+filename = sys.argv[1]
+ipaddress = sys.argv[2]
+
 inp = ""
 raw_mode = False
 normal_mode = True
@@ -99,8 +102,12 @@ def on_open(ws):
         running = True
         injected = False
         do_input = getpass.getpass
-
-        comandos = ["import experimentos.teste", "import os", "os.remove('experimentos/teste.py')", "\x04"]
+        print(filename)
+        comandos = ["import experimentos."+filename,
+                    "unload(experimentos."+filename+")",
+                    "import os",
+                    "os.remove('experimentos/" + filename + ".py')",
+                    "\x04"]
         contadorComandos = 0
 
         while running:
@@ -180,7 +187,7 @@ def on_open(ws):
 
 if __name__ == "__main__":
     websocket.enableTrace(False)
-    ws = websocket.WebSocketApp("ws://10.0.0.100:8266",
+    ws = websocket.WebSocketApp("ws://" + ipaddress + ":8266",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close)

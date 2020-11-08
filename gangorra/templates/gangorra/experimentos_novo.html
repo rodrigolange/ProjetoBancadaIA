@@ -1,0 +1,12 @@
+{% extends 'gangorra/base.html' %}
+
+{% block content %}
+    {% load crispy_forms_tags %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <button type="submit">Upload</button>
+  </form>
+
+  <p><a href="{% url 'gangorra:index' %}">Return to home</a></p>
+{% endblock %}

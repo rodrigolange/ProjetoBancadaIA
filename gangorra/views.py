@@ -1,22 +1,58 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
-from .forms import VideoForm
+from .forms import FormVideo, FormExperimento
 from .models import ExperimentoGangorra
 from django.utils import timezone
+from .tasks import enviarCodigoTask
 
 
 class Index(FormView):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'titulo': 'Gangorra',
+            'titulo': 'Gangorra Controle',
         }
         return render(request, 'gangorra/index.html', context=context)
 
 
+class NovoExperimento(FormView):
+    def get(self, request, *args, **kwargs):
+        form = FormExperimento()
+        context = {
+            'titulo': 'Gangorra Controle',
+            'form': form,
+        }
+        return render(request, 'gangorra/experimentos_novo.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = FormExperimento(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.created_date = timezone.now()
+
+            #gera arquivo do experimento
+            codigo = "import PID\npid=PID.PID()\npid.executa("
+            codigo = codigo + "referencia=" + post.modelo_referencia + ", "
+            codigo = codigo + "kp=" + post.modelo_kp + ", "
+            codigo = codigo + "ki=" + post.modelo_ki + ", "
+            codigo = codigo + "kd=" + post.modelo_kd + ", "
+            codigo = codigo + "repeticoes=" + post.modelo_repeticoes
+            codigo = codigo + ")\n"
+
+            taskID = enviarCodigoTask.delay('10.0.0.210', codigo)
+
+            #print(f'ID da task:{taskID}')
+
+            #return redirect('spotnano_experimentos_detail', pk=post.pk)
+            #return redirect('BancadaIA:spotnano_experimentos_progress', taskID)
+
+            return redirect('gangorra:experimentos_lista')
+
+
 def video_upload(request):
     if request.method == 'POST':
-        form = VideoForm(request.POST, request.FILES)
+        form = FormVideo(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -25,7 +61,7 @@ def video_upload(request):
             post.save()
             return redirect('gangorra:index')
     else:
-        form = VideoForm()
+        form = FormVideo()
     return render(request, 'gangorra/videos.html', {
         'form': form
     })
