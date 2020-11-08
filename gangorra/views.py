@@ -4,6 +4,7 @@ from .forms import FormVideo, FormExperimento
 from .models import ExperimentoGangorra
 from django.utils import timezone
 from .tasks import enviarCodigoTask
+from celery.result import AsyncResult
 
 
 class Index(FormView):
@@ -15,7 +16,7 @@ class Index(FormView):
         return render(request, 'gangorra/index.html', context=context)
 
 
-class NovoExperimento(FormView):
+class ExperimentoNovo(FormView):
     def get(self, request, *args, **kwargs):
         form = FormExperimento()
         context = {
@@ -41,33 +42,29 @@ class NovoExperimento(FormView):
             codigo = codigo + ")\n"
 
             taskID = enviarCodigoTask.delay('10.0.0.210', codigo)
-
-            #print(f'ID da task:{taskID}')
-
-            #return redirect('spotnano_experimentos_detail', pk=post.pk)
-            #return redirect('BancadaIA:spotnano_experimentos_progress', taskID)
-
-            return redirect('gangorra:experimentos_lista')
+            return redirect('gangorra:experimentos_progress', taskID)
 
 
-def video_upload(request):
-    if request.method == 'POST':
-        form = FormVideo(request.POST, request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            print(request.user)
-            post.created_date = timezone.now()
-            post.save()
-            return redirect('gangorra:index')
-    else:
-        form = FormVideo()
-    return render(request, 'gangorra/videos.html', {
-        'form': form
-    })
+def ExperimentoGetProgress(request, task_id):
+    response_data = {
+        'taskID': task_id,
+        'title': 'Gangorra Status',
+    }
+    return render(request, 'gangorra/experimentos_statusbase.html', response_data)
 
 
-class ListaVideos(FormView):
+def ExperimentoGetProgressFrame(request, task_id):
+    result = AsyncResult(task_id)
+    response_data = {
+        'state': result.state,
+        'details': result.info,
+        'status': result.status
+    }
+    return render(request, 'gangorra/experimentos_statusFrame.html', response_data)
+
+#- videos -#
+
+class VideosLista(FormView):
 
     def get(self, request, *args, **kwargs):
         posts = ExperimentoGangorra.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
@@ -81,3 +78,4 @@ class VideosDetail(FormView):
         post.videoArquivo = "/media/" + post.videoArquivo.name
         #video = ExperimentoGangorra.objects.filter(experimento_id=post.experimento_id)
         return render(request, 'gangorra/experimentos_detail.html', {'post': post})
+

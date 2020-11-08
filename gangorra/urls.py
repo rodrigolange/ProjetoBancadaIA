@@ -2,13 +2,13 @@ from django.urls import path
 from . import views
 
 
-
 app_name = "gangorra"
 
 urlpatterns = [
     path("", views.Index.as_view(), name="index"),
-    path("video_upload", views.video_upload, name="video_upload"),
-    path('experimentonovo', views.NovoExperimento.as_view(), name='experimentos_novo'),
-    path('experimentos/lista/', views.ListaVideos.as_view(), name='experimentos_lista'),
+    path('experimentonovo', views.ExperimentoNovo.as_view(), name='experimentos_novo'),
+    path('experimentos/<task_id>/status/', views.ExperimentoGetProgress, name='experimentos_progress'),
+    path('experimentos/<task_id>/statusframe/', views.ExperimentoGetProgressFrame, name='experimentos_progressframe'),
+    path('experimentos/lista/', views.VideosLista.as_view(), name='experimentos_lista'),
     path('experimentos/<int:pk>/detalhe/', views.VideosDetail.as_view(), name='experimentos_detail'),
 ]

@@ -75,7 +75,6 @@ class SpotNanoExperimentosNew(FormView):
             taskID = enviarCodigoTask.delay('10.0.0.100', codigo)
             print(f'ID da task:{taskID}')
 
-            #return redirect('spotnano_experimentos_detail', pk=post.pk)
             return redirect('BancadaIA:spotnano_experimentos_progress', taskID)
 
 

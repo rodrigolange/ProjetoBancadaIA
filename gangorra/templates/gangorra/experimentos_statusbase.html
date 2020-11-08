@@ -1,0 +1,10 @@
+{% extends "gangorra/base.html" %}
+
+{% load static %}
+
+{% block pagetitle %}Bancada de Experimentos: Gangorra Controle{% endblock %}
+
+{% block content %}
+      <h1 class="w3-text-teal w3-center">{{ title }}</h1>
+      <iframe src="{% url 'gangorra:experimentos_progressframe' task_id=taskID %}" title="status">
+{% endblock %}
