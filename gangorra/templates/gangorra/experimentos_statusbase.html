@@ -6,5 +6,5 @@
 
 {% block content %}
       <h1 class="w3-text-teal w3-center">{{ title }}</h1>
-      <iframe src="{% url 'gangorra:experimentos_progressframe' task_id=taskID %}" title="status">
+    <iframe src="{% url 'gangorra:experimentos_progressframe' task_id=taskID %}" width="1000" height="100"></iframe>
 {% endblock %}

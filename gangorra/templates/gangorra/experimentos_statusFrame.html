@@ -1,17 +1,31 @@
+<style>
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+}
 
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #4CAF50;
+}
+</style>
+<script type = "text/JavaScript">
+    <!--
+        function AutoRefresh( t ) {
+            let elem = document.getElementById("myBar");
+            let width = {{ percent }};
+            elem.style.width = width + "%";
+            setTimeout("location.reload(true);", t);
+        }
+
+    //-->
+</script>
+
+<body onload = "AutoRefresh(1000);" >
     <h1>{{ titulo }}</h1>
-
-      <script type = "text/JavaScript">
-         <!--
-            function AutoRefresh( t ) {
-               setTimeout("location.reload(true);", t);
-            }
-         //-->
-      </script>
-
-   <body onload = "JavaScript:AutoRefresh(1000);">
-      <p>This page will refresh every 5 seconds.</p>
-      <p>{{ state }}</p>
-      <p>{{ details }}</p>
-   </body>
+    <div id="myProgress">
+       <div id="myBar"></div>
+    </div>
+</body>
 

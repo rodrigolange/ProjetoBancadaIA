@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
+from django.views.decorators.clickjacking import xframe_options_exempt
 from .forms import FormVideo, FormExperimento
 from .models import ExperimentoGangorra
 from django.utils import timezone
@@ -46,6 +47,7 @@ class ExperimentoNovo(FormView):
 
 
 def ExperimentoGetProgress(request, task_id):
+
     response_data = {
         'taskID': task_id,
         'title': 'Gangorra Status',
@@ -53,14 +55,21 @@ def ExperimentoGetProgress(request, task_id):
     return render(request, 'gangorra/experimentos_statusbase.html', response_data)
 
 
-def ExperimentoGetProgressFrame(request, task_id):
-    result = AsyncResult(task_id)
-    response_data = {
-        'state': result.state,
-        'details': result.info,
-        'status': result.status
-    }
-    return render(request, 'gangorra/experimentos_statusFrame.html', response_data)
+#@xframe_options_exempt
+class ExperimentoGetProgressFrame(FormView):
+    @xframe_options_exempt
+    def get(self, request, task_id, *args, **kwargs):
+        result = AsyncResult(task_id)
+        percent = 0
+
+        if result.status == 'PROGRESS':
+            percent = result.info.get('percent')
+
+        response_data = {
+            'percent': percent,
+        }
+        return render(request, 'gangorra/experimentos_statusFrame.html', response_data)
+
 
 #- videos -#
 
