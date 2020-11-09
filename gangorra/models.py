@@ -6,7 +6,6 @@ from django.utils import timezone
 class ExperimentoGangorra(models.Model):
     experimento_id = models.AutoField(primary_key=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
     created_date = models.DateTimeField(default=timezone.now)
 
     csvArquivo = models.FileField(upload_to='gangorra/csv/', null=True, verbose_name="")

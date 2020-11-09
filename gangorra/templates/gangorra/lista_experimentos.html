@@ -7,9 +7,7 @@
 
     {% for post in posts %}
         <div>
-            <h2><a href="{% url 'gangorra:experimentos_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-            <p>Criação: {{ post.created_date }}</p>
-            <p>Video: {{ post.videoArquivo }}</p>
+            <h2><a href="{% url 'gangorra:experimentos_detail' pk=post.pk %}">{{ post.created_date }}</a></h2>
         </div>
     {% endfor %}
 

@@ -18,7 +18,7 @@ def enviarCodigoTask(self, IPAddress, codigo):
     esp.runexperiment(codigo)
 
     user = User.objects.get(username='lange')
-    r = ExperimentoGangorra(author=user, title='teste 0011', csvArquivo='dados12.txt', videoArquivo='dados12.mp4')
+    r = ExperimentoGangorra(author=user, csvArquivo='dados12.txt', videoArquivo='dados12.mp4')
     r.publish()
 
 

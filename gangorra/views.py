@@ -64,6 +64,10 @@ class ExperimentoGetProgressFrame(FormView):
 
         if result.status == 'PROGRESS':
             percent = result.info.get('percent')
+        elif result.status == 'PENDING':
+            percent = 0
+        else:
+            percent = 100
 
         response_data = {
             'percent': percent,

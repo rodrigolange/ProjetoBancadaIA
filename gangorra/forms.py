@@ -5,11 +5,11 @@ from .models import ExperimentoGangorra
 class FormExperimento(forms.ModelForm):
     class Meta:
         model = ExperimentoGangorra
-        fields = ["title", "modelo_kp", "modelo_ki", "modelo_kd", "modelo_referencia", "modelo_repeticoes"]
+        fields = ["modelo_kp", "modelo_ki", "modelo_kd", "modelo_referencia", "modelo_repeticoes"]
 
 
 class FormVideo(forms.ModelForm):
     class Meta:
         model = ExperimentoGangorra
-        fields = ["title", "csvArquivo", "videoArquivo"]
+        fields = ["csvArquivo", "videoArquivo"]
 
