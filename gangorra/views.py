@@ -6,7 +6,7 @@ from .models import ExperimentoGangorra
 from django.utils import timezone
 from .tasks import enviarCodigoTask
 from celery.result import AsyncResult
-
+from datetime import datetime
 
 class Index(FormView):
 
@@ -33,16 +33,28 @@ class ExperimentoNovo(FormView):
             post.author = request.user
             post.created_date = timezone.now()
 
+            filename = "exp" + datetime.now().strftime("%d%m%Y%H%M%S")
+
             #gera arquivo do experimento
             codigo = "import PID\npid=PID.PID()\npid.executa("
             codigo = codigo + "referencia=" + post.modelo_referencia + ", "
             codigo = codigo + "kp=" + post.modelo_kp + ", "
             codigo = codigo + "ki=" + post.modelo_ki + ", "
             codigo = codigo + "kd=" + post.modelo_kd + ", "
-            codigo = codigo + "repeticoes=" + post.modelo_repeticoes
+            codigo = codigo + "repeticoes=" + post.modelo_repeticoes + ", "
+            codigo = codigo + "dfile='" + filename + ".csv'"
             codigo = codigo + ")\n"
 
-            taskID = enviarCodigoTask.delay('10.0.0.210', codigo)
+            taskID = enviarCodigoTask.delay('10.0.0.210',
+                                            codigo=codigo,
+                                            filename=filename,
+                                            autor="lange", #=post.author)
+                                            kp=post.modelo_kp,
+                                            ki=post.modelo_ki,
+                                            kd=post.modelo_kd,
+                                            ref=post.modelo_referencia,
+                                            rep=post.modelo_repeticoes)
+
             return redirect('gangorra:experimentos_progress', taskID)
 
 
@@ -75,6 +87,17 @@ class ExperimentoGetProgressFrame(FormView):
         return render(request, 'gangorra/experimentos_statusFrame.html', response_data)
 
 
+class ExperimentoDetalhe(FormView):
+    def get(self, request, pk, *args, **kwargs):
+        post = get_object_or_404(ExperimentoGangorra, pk=pk)
+
+        print(post.videoArquivo.name)
+
+        post.videoArquivo = "/media/gangorra/videos/" + post.videoArquivo.name
+        post.csvArquivo = "/media/gangorra/csv/" + post.csvArquivo.name
+        post.graficoArquivo = "/media/gangorra/graficos/" + post.graficoArquivo.name
+        return render(request, 'gangorra/experimentos_detail.html', {'post': post})
+
 #- videos -#
 
 class VideosLista(FormView):
@@ -85,10 +108,5 @@ class VideosLista(FormView):
                       {'posts': posts, 'titulo': 'Lista de experimentos'})
 
 
-class VideosDetail(FormView):
-    def get(self, request, pk, *args, **kwargs):
-        post = get_object_or_404(ExperimentoGangorra, pk=pk)
-        post.videoArquivo = "/media/" + post.videoArquivo.name
-        #video = ExperimentoGangorra.objects.filter(experimento_id=post.experimento_id)
-        return render(request, 'gangorra/experimentos_detail.html', {'post': post})
+
 

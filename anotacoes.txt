@@ -7,7 +7,11 @@ https://docs.djangoproject.com/en/3.1/topics/forms/
 
 Precisa executar os dois comandos abaixo em terminais separados
 celery -A ProjetoBancadaIA worker --without-gossip --without-mingle --without-heartbeat -Ofair -l INFO --concurrency 1 -P solo
+
 C:\Users\lange\ArquivosCompartilhados\OneDrive\Django\ProjetoBancadaIA\Redis-w64\redis-server.exe
 
 
 pip install django-crispy-forms
+
+.\ffmpeg -f dshow -video_size 640x480 -framerate 25 -pixel_format yuyv422 -i video="Microsoft® LifeCam HD-3000" out.avi
+.\ffmpeg -i out.avi -c:v vp9 teste.mp4

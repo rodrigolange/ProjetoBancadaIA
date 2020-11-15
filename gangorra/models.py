@@ -10,12 +10,15 @@ class ExperimentoGangorra(models.Model):
 
     csvArquivo = models.FileField(upload_to='gangorra/csv/', null=True, verbose_name="")
     videoArquivo = models.FileField(upload_to='gangorra/videos/', null=True, verbose_name="")
+    graficoArquivo = models.FileField(upload_to='gangorra/graficos/', null=True, verbose_name="")
 
     modelo_kp = models.CharField(max_length=20, default='0')
     modelo_ki = models.CharField(max_length=20, default='0')
     modelo_kd = models.CharField(max_length=20, default='0')
     modelo_referencia = models.CharField(max_length=20, default='0')
     modelo_repeticoes = models.CharField(max_length=20, default='0')
+
+    title = models.CharField(max_length=200)
 
     def publish(self):
         self.save()

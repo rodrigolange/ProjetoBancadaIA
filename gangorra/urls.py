@@ -9,5 +9,5 @@ urlpatterns = [
     path('experimentos/<task_id>/status/', views.ExperimentoGetProgress, name='experimentos_progress'),
     path('experimentos/<task_id>/statusframe/', views.ExperimentoGetProgressFrame.as_view(), name='experimentos_progressframe'),
     path('experimentos/lista/', views.VideosLista.as_view(), name='experimentos_lista'),
-    path('experimentos/<int:pk>/detalhe/', views.VideosDetail.as_view(), name='experimentos_detail'),
+    path('experimentos/<int:pk>/detalhe/', views.ExperimentoDetalhe.as_view(), name='experimentos_detail'),
 ]

@@ -1,0 +1,8 @@
+import sys
+import pandas as pd
+
+filename = sys.argv
+
+dados = pd.read_csv("media/gangorra/csv/" + filename + ".csv")
+grafico = dados.plot.line()
+grafico.figure.savefig("media/gangorra/graficos/" + filename + ".png")
